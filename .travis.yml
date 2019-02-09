@@ -1,0 +1,18 @@
+language: shell
+services:
+- docker
+
+env:
+  DOCKER_TAG: "$TRAVIS_BUILD_ID"
+  DEV_REPO: blademainer/hexo:$TRAVIS_BUILD_ID
+  RELEASE_REPO: blademainer/hexo:$TRAVIS_TAG
+
+install:
+  - docker build ./hexo -t $DEV_REPO
+  expect:
+   tags
+
+after_install:
+  - docker tag $DEV_REPO $RELEASE_REPO && docker login -u
+  on:
+    tags: true
